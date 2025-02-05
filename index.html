@@ -8,13 +8,14 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: url('collage.jpg') no-repeat center center fixed; 
+            background: url('collage.jpg') no-repeat center center fixed;
             background-size: cover;
             margin: 0;
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         /* Translucent Proposal Box */
@@ -50,6 +51,37 @@
             background-color: #666;
             color: white;
             position: absolute;
+        }
+
+        /* Celebration Message */
+        .celebration-message {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 10px black;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            z-index: 1000;
+        }
+
+        /* Fireworks */
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            opacity: 0;
+            animation: explode 1s ease-out infinite;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
         }
 
         /* Popup Styles */
@@ -89,10 +121,15 @@
 <body>
 
     <!-- Proposal Box -->
-    <div class="container">
+    <div class="container" id="proposalContainer">
         <h1>Will You Be My Valentine? ❤️</h1>
-        <button class="btn yes-btn" onclick="yesClicked()">Yes</button>
-        <button class="btn no-btn" onmouseover="moveNoButton()" id="noButton">No</button>
+        <button class="btn yes-btn" onclick="startCelebration()">Yes</button>
+        <button class="btn no-btn" onmouseover="startImageChange()" id="noButton">No</button>
+    </div>
+
+    <!-- Celebration Message -->
+    <div class="celebration-message" id="celebrationMessage">
+        YAYYYYYYYYY 🎉, I'm glad that you're my first Valentine (and last 😉😉)
     </div>
 
     <!-- Pop-up Message -->
@@ -108,38 +145,70 @@
 
     <script>
         let images = [
-            "cute1.jpg",
-            "cute2.jpg",
-            "cute3.jpg",
-            "cute4.jpg",
-            "cute5.jpg",
-            "cute6.jpg"
+            "images/cute1.jpg",
+            "images/cute2.jpg",
+            "images/cute3.jpg",
+            "images/cute4.jpg",
+            "images/cute5.jpg",
+            "images/cute6.jpg"
         ];
 
         let interval;
 
-        function yesClicked() {
-            alert("Yay! ❤️ Can't wait to celebrate together!");
+        function startCelebration() {
+            // Hide the proposal box
+            document.getElementById("proposalContainer").style.opacity = "0";
+
+            // Show celebration text
+            let celebrationText = document.getElementById("celebrationMessage");
+            celebrationText.style.opacity = "1";
+
+            // Fireworks effect
+            for (let i = 0; i < 20; i++) {
+                createFirework();
+            }
+
+            // Ensure "No" button is at a random spot after celebration
+            moveNoButton();
+        }
+
+        function createFirework() {
+            let firework = document.createElement("div");
+            firework.className = "firework";
+            document.body.appendChild(firework);
+
+            let x = Math.random() * window.innerWidth;
+            let y = Math.random() * window.innerHeight;
+            let colors = ["red", "yellow", "blue", "green", "purple", "orange"];
+
+            firework.style.left = `${x}px`;
+            firework.style.top = `${y}px`;
+            firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+            firework.style.animationDuration = `${Math.random() * 1.5 + 0.5}s`;
+
+            setTimeout(() => {
+                firework.remove();
+            }, 1500);
         }
 
         function moveNoButton() {
             let noBtn = document.getElementById("noButton");
-            let popup = document.getElementById("popup");
 
-            // Move No Button Randomly
-            let x = Math.random() * (window.innerWidth - 100);
-            let y = Math.random() * (window.innerHeight - 50);
+            let x = Math.random() * (window.innerWidth - 250);
+            let y = Math.random() * (window.innerHeight - 250);
             noBtn.style.left = x + "px";
             noBtn.style.top = y + "px";
 
             // Show Pop-up
-            popup.style.display = "block";
+            
 
             // Start changing images dynamically
-            startImageChange();
         }
 
         function startImageChange() {
+            let popup = document.getElementById("popup");
+            popup.style.display = "block";
             let photo1 = document.getElementById("photo1");
             let photo2 = document.getElementById("photo2");
 
@@ -154,19 +223,13 @@
 
         function resetPage() {
             let popup = document.getElementById("popup");
-            let noBtn = document.getElementById("noButton");
-
             // Hide Pop-up
             popup.style.display = "none";
-
             // Move No Button to a New Random Position Again
-            let x = Math.random() * (window.innerWidth - 100);
-            let y = Math.random() * (window.innerHeight - 50);
-            noBtn.style.left = x + "px";
-            noBtn.style.top = y + "px";
+            moveNoButton();
 
             // Stop changing images until "No" is hovered again
-            clearInterval(interval);
+            // clearInterval(interval);
         }
     </script>
 
