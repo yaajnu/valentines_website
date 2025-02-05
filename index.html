@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: url('collage.jpg') no-repeat center center fixed; 
+            background-size: cover;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Translucent Proposal Box */
+        .container {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        h1 {
+            color: #ff4d4d;
+            font-size: 30px;
+        }
+
+        .btn {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .yes-btn {
+            background-color: #ff4d4d;
+            color: white;
+        }
+
+        .no-btn {
+            background-color: #666;
+            color: white;
+            position: absolute;
+        }
+
+        /* Popup Styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            z-index: 1000;
+        }
+
+        .popup img {
+            width: 200px;
+            height: auto;
+            margin: 10px;
+            border-radius: 10px;
+        }
+
+        .popup button {
+            margin-top: 10px;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Proposal Box -->
+    <div class="container">
+        <h1>Will You Be My Valentine? ❤️</h1>
+        <button class="btn yes-btn" onclick="yesClicked()">Yes</button>
+        <button class="btn no-btn" onmouseover="moveNoButton()" id="noButton">No</button>
+    </div>
+
+    <!-- Pop-up Message -->
+    <div class="popup" id="popup">
+        <h2>Really? But we look so cute together 😭</h2>
+        <div id="photoContainer">
+            <img id="photo1" src="images/cute1.jpg" alt="Us Together">
+            <img id="photo2" src="images/cute2.jpg" alt="More Memories">
+        </div>
+        <br>
+        <button onclick="resetPage()">Okay, Maybe Yes 😍</button>
+    </div>
+
+    <script>
+        let images = [
+            "cute1.jpg",
+            "cute2.jpg",
+            "cute3.jpg",
+            "cute4.jpg",
+            "cute5.jpg",
+            "cute6.jpg"
+        ];
+
+        let interval;
+
+        function yesClicked() {
+            alert("Yay! ❤️ Can't wait to celebrate together!");
+        }
+
+        function moveNoButton() {
+            let noBtn = document.getElementById("noButton");
+            let popup = document.getElementById("popup");
+
+            // Move No Button Randomly
+            let x = Math.random() * (window.innerWidth - 100);
+            let y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.left = x + "px";
+            noBtn.style.top = y + "px";
+
+            // Show Pop-up
+            popup.style.display = "block";
+
+            // Start changing images dynamically
+            startImageChange();
+        }
+
+        function startImageChange() {
+            let photo1 = document.getElementById("photo1");
+            let photo2 = document.getElementById("photo2");
+
+            // Clear any existing interval to avoid multiple timers
+            clearInterval(interval);
+
+            interval = setInterval(() => {
+                photo1.src = images[Math.floor(Math.random() * images.length)];
+                photo2.src = images[Math.floor(Math.random() * images.length)];
+            }, 1000); // Change images every second
+        }
+
+        function resetPage() {
+            let popup = document.getElementById("popup");
+            let noBtn = document.getElementById("noButton");
+
+            // Hide Pop-up
+            popup.style.display = "none";
+
+            // Move No Button to a New Random Position Again
+            let x = Math.random() * (window.innerWidth - 100);
+            let y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.left = x + "px";
+            noBtn.style.top = y + "px";
+
+            // Stop changing images until "No" is hovered again
+            clearInterval(interval);
+        }
+    </script>
+
+</body>
+</html>
