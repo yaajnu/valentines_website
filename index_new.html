@@ -124,20 +124,20 @@
     <div class="container" id="proposalContainer">
         <h1>Will You Be My Valentine? ❤️</h1>
         <button class="btn yes-btn" onclick="startCelebration()">Yes</button>
-        <button class="btn no-btn" onmouseover="moveNoButton()" id="noButton">No</button>
+        <button class="btn no-btn" onmouseover="startImageChange()" id="noButton">No</button>
     </div>
 
     <!-- Celebration Message -->
     <div class="celebration-message" id="celebrationMessage">
-        YAYYYYYYYYY 🎉 , Congratulations on choosing to be my first and last Valentine 
+        YAYYYYYYYYY 🎉, I'm glad that you're my first Valentine (and last 😉😉)
     </div>
 
     <!-- Pop-up Message -->
     <div class="popup" id="popup">
         <h2>Really? But we look so cute together 😭</h2>
         <div id="photoContainer">
-            <img id="photo1" src="cute1.jpg" alt="Us Together">
-            <img id="photo2" src="cute2.jpg" alt="More Memories">
+            <img id="photo1" src="images/cute1.jpg" alt="Us Together">
+            <img id="photo2" src="images/cute2.jpg" alt="More Memories">
         </div>
         <br>
         <button onclick="resetPage()">Okay, Maybe Yes 😍</button>
@@ -145,12 +145,12 @@
 
     <script>
         let images = [
-            "cute1.jpg",
-            "cute2.jpg",
-            "cute3.jpg",
-            "cute4.jpg",
-            "cute5.jpg",
-            "cute6.jpg"
+            "images/cute1.jpg",
+            "images/cute2.jpg",
+            "images/cute3.jpg",
+            "images/cute4.jpg",
+            "images/cute5.jpg",
+            "images/cute6.jpg"
         ];
 
         let interval;
@@ -167,6 +167,9 @@
             for (let i = 0; i < 20; i++) {
                 createFirework();
             }
+
+            // Ensure "No" button is at a random spot after celebration
+            moveNoButton();
         }
 
         function createFirework() {
@@ -191,22 +194,21 @@
 
         function moveNoButton() {
             let noBtn = document.getElementById("noButton");
-            let popup = document.getElementById("popup");
 
-            // Move No Button Randomly
-            let x = Math.random() * (window.innerWidth - 100);
-            let y = Math.random() * (window.innerHeight - 50);
+            let x = Math.random() * (window.innerWidth - 250);
+            let y = Math.random() * (window.innerHeight - 250);
             noBtn.style.left = x + "px";
             noBtn.style.top = y + "px";
 
             // Show Pop-up
-            popup.style.display = "block";
+            
 
             // Start changing images dynamically
-            startImageChange();
         }
 
         function startImageChange() {
+            let popup = document.getElementById("popup");
+            popup.style.display = "block";
             let photo1 = document.getElementById("photo1");
             let photo2 = document.getElementById("photo2");
 
@@ -221,19 +223,13 @@
 
         function resetPage() {
             let popup = document.getElementById("popup");
-            let noBtn = document.getElementById("noButton");
-
             // Hide Pop-up
             popup.style.display = "none";
-
             // Move No Button to a New Random Position Again
-            let x = Math.random() * (window.innerWidth - 100);
-            let y = Math.random() * (window.innerHeight - 50);
-            noBtn.style.left = x + "px";
-            noBtn.style.top = y + "px";
+            moveNoButton();
 
             // Stop changing images until "No" is hovered again
-            clearInterval(interval);
+            // clearInterval(interval);
         }
     </script>
 
